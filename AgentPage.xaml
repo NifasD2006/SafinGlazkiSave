@@ -12,11 +12,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
             <TextBox Name="TBoxSearch" TextChanged="TBoxSearch_TextChanged" Width="250" Height="25" Margin="10"></TextBox>
             <ComboBox Name="ComboType" SelectionChanged="ComboType_SelectionChanged" FontSize="15" Width="225" Margin="10">
-                <TextBlock>Сортировка</TextBlock>
+                <TextBlock>Тип сортировка</TextBlock>
                 <TextBlock>Наименования по возрастанию</TextBlock>
                 <TextBlock>Наименования по убыванию</TextBlock>
                 <TextBlock>Скидка по возрастанию</TextBlock>
@@ -49,12 +50,12 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Image Width="100" Grid.Column="0" Stretch="UniformToFill" HorizontalAlignment="Center">
+                        <Image Width="170" Grid.Column="0" Grid.RowSpan="6" Stretch="UniformToFill" HorizontalAlignment="Center">
                             <Image.Source>
-                                <Binding Path="MainImagePath">
+                                <Binding Path="Logo">
                                     <Binding.TargetNullValue>
                                         <ImageSource>
-                                            Resources/Глазки-save.png
+                                            Resources/picture.png
                                         </ImageSource>
                                     </Binding.TargetNullValue>
                                 </Binding>
@@ -72,6 +73,16 @@
             </ListView.ItemTemplate>
         </ListView>
 
-
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Name="LeftDirBtn" Content="&lt;" Width="26" Height="26" Click="LeftDirBtn_Click"></Button>
+            <ListBox FontSize="20" Name="PageListBox" MouseUp="PageListBox_MouseUp">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            <Button Name="RigthDirBtn" Content="&gt;" Width="26" Height="26" Click="RigthDirBtn_Click"></Button>
+        </StackPanel>
     </Grid>
 </Page>
