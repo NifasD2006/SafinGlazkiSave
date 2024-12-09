@@ -11,6 +11,5 @@ namespace SafinGlazkiSave
     {
         public static Frame MainFrame { get; set; }
 
-
     }
 }

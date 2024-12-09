@@ -15,8 +15,8 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
-            <TextBox Name="TBoxSearch" TextChanged="TBoxSearch_TextChanged" Width="250" Height="25" Margin="10"></TextBox>
-            <ComboBox Name="ComboType" SelectionChanged="ComboType_SelectionChanged" FontSize="15" Width="225" Margin="10">
+            <TextBox Name="TBoxSearch" TextChanged="TBoxSearch_TextChanged" Width="230" Height="25" Margin="10"></TextBox>
+            <ComboBox Name="ComboType" SelectionChanged="ComboType_SelectionChanged" FontSize="15" Width="205" Margin="10">
                 <TextBlock>Тип сортировка</TextBlock>
                 <TextBlock>Наименования по возрастанию</TextBlock>
                 <TextBlock>Наименования по убыванию</TextBlock>
@@ -25,7 +25,7 @@
                 <TextBlock>Приоритет по возрастанию</TextBlock>
                 <TextBlock>Приоритет по убыванию</TextBlock>
             </ComboBox>
-            <ComboBox Name="ComboAgentType" SelectionChanged="ComboAgentType_SelectionChanged" FontSize="15" Width="200" Margin="10">
+            <ComboBox Name="ComboAgentType" SelectionChanged="ComboAgentType_SelectionChanged" FontSize="15" Width="180" Margin="10">
                 <TextBlock>Все типы</TextBlock>
                 <TextBlock>МФО</TextBlock>
                 <TextBlock>ООО</TextBlock>
@@ -34,6 +34,7 @@
                 <TextBlock>ОАО</TextBlock>
                 <TextBlock>ПАО</TextBlock>
             </ComboBox>
+            <Button Content="Добавить" Width="100" Margin="10" Name="AddBtn" Click="AddBtn_Click"></Button>
         </StackPanel>
         <ListView Name="AgentListView" Grid.Row="1">
             <ListView.ItemTemplate>
