@@ -21,59 +21,69 @@ namespace SafinGlazkiSave
     /// </summary>
     public partial class AddEditPage : Page
     {
-        private Agent _currentAgents = new Agent();
+        private Agent _currentAgent = new Agent();
         public AddEditPage(Agent SelectedService)
-        {
+        {   
             InitializeComponent();
-
+            ComboType.SelectedItem = 0;
             if (SelectedService != null)
-                _currentAgents = SelectedService;
-            DataContext = _currentAgents;
+            {
+
+                _currentAgent = SelectedService;
+                ComboType.SelectedIndex = _currentAgent.AgentTypeID-1;
+            }
+            DataContext = _currentAgent;
+
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             StringBuilder errors = new StringBuilder();
-            if (string.IsNullOrWhiteSpace(_currentAgents.Title))
+            if (string.IsNullOrWhiteSpace(_currentAgent.Title))
                 errors.AppendLine("Укажите наименование агента");
-            if (string.IsNullOrWhiteSpace(_currentAgents.Address))
+            if (string.IsNullOrWhiteSpace(_currentAgent.Address))
                 errors.AppendLine("Укажите адресс агента");
-            if (string.IsNullOrWhiteSpace(_currentAgents.DirectorName))
+            if (string.IsNullOrWhiteSpace(_currentAgent.DirectorName))
                 errors.AppendLine("Укажите наименование ФИО директора");
             if (ComboType.SelectedItem == null)
                 errors.AppendLine("Укажите тип агента");
-            if (string.IsNullOrWhiteSpace(_currentAgents.Priority.ToString()))
+            if (string.IsNullOrWhiteSpace(_currentAgent.Priority.ToString()))
                 errors.AppendLine("Укажите приоритет агента");
-            if(_currentAgents.Priority<=0)
+            if(_currentAgent.Priority<=0)
                 errors.AppendLine("Укажите положительнй приоритет");
-            if (string.IsNullOrWhiteSpace(_currentAgents.INN))
+            if (string.IsNullOrWhiteSpace(_currentAgent.INN))
                 errors.AppendLine("Укажите ИНН агента");
-            if (string.IsNullOrWhiteSpace(_currentAgents.KPP))
+            if (string.IsNullOrWhiteSpace(_currentAgent.KPP))
                 errors.AppendLine("Укажите КПП агента");
-            if (string.IsNullOrWhiteSpace(_currentAgents.Phone))
+            if (string.IsNullOrWhiteSpace(_currentAgent.Phone))
                 errors.AppendLine("Укажите телефон агента");
             else
             {
-                string ph = _currentAgents.Phone.Replace("(", "").Replace("-", "").Replace("+", "").Replace(")", "");
+                string ph = _currentAgent.Phone.Replace("(", "").Replace("-", "").Replace("+", "").Replace(")", "").Replace(" ","");
                 if (((ph[1] == '9' || ph[1] == '4' || ph[1] == '8') && ph.Length != 11) || (ph[1] == '3' && ph.Length != 12))
                     errors.AppendLine("Укажите правильно номер телефона");
             }
-            if (string.IsNullOrWhiteSpace(_currentAgents.Email))
+            if (string.IsNullOrWhiteSpace(_currentAgent.Email))
                 errors.AppendLine("Укажите почта агента");
             if(errors.Length > 0)
             {
                 MessageBox.Show(errors.ToString());
                 return;
             }
-            if (_currentAgents.ID == 0)
-                SafinGlazkiSaveEntities.GetContext().Agent.Add(_currentAgents);
+
+            _currentAgent.AgentTypeID = ComboType.SelectedIndex + 1;
+
+            if (_currentAgent.ID == 0)
+            {
+                SafinGlazkiSaveEntities.GetContext().Agent.Add(_currentAgent);
+            }
             try
             {
                 SafinGlazkiSaveEntities.GetContext().SaveChanges();
                 MessageBox.Show("Информация сохранена");
                 Manager.MainFrame.GoBack();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString());
             }
@@ -83,18 +93,43 @@ namespace SafinGlazkiSave
         {
             var currentAgent = (sender as Button).DataContext as Agent;
 
+            var currentProductSale = SafinGlazkiSaveEntities.GetContext().ProductSale.ToList();
+            currentProductSale = currentProductSale.Where(p => p.AgentID == _currentAgent.ID).ToList();
 
-            if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!",
-                               MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            var currentAgentPriorityHistory = SafinGlazkiSaveEntities.GetContext().AgentPriorityHistory.ToList();
+            var currentShop = SafinGlazkiSaveEntities.GetContext().Shop.ToList();
+            currentAgentPriorityHistory = currentAgentPriorityHistory.Where(p => p.AgentID == _currentAgent.ID).ToList();
+            currentShop = currentShop.Where(p => p.AgentID == _currentAgent.ID).ToList();
+            if (currentProductSale.Count != 0)
+                MessageBox.Show("Невозможно выполнить удаление, так как существует история реализации продуктов");
+            else
             {
-                try
+                if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    SafinGlazkiSaveEntities.GetContext().Agent.Remove(currentAgent);
-                    SafinGlazkiSaveEntities.GetContext().SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message.ToString());
+                    try
+                    {
+                        SafinGlazkiSaveEntities.GetContext().Agent.Remove(_currentAgent);
+
+                        if (currentAgentPriorityHistory.Count != 0)
+                        {
+                            for (int i = 0; currentAgentPriorityHistory.Count == i; i++)
+                                SafinGlazkiSaveEntities.GetContext().AgentPriorityHistory.Remove(currentAgentPriorityHistory[i]);
+                        }
+                        if (currentShop.Count != 0)
+                        {
+                            for (int i = 0; currentShop.Count == i; i++)
+                                SafinGlazkiSaveEntities.GetContext().Shop.Remove(currentShop[i]);
+                        }
+                        SafinGlazkiSaveEntities.GetContext().SaveChanges();
+
+                        MessageBox.Show("Информация удалена!");
+                        Manager.MainFrame.GoBack();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString());
+                    }
                 }
             }
         }
@@ -104,9 +139,16 @@ namespace SafinGlazkiSave
             OpenFileDialog myOpenfileDialog=new OpenFileDialog();
             if (myOpenfileDialog.ShowDialog() == true)
             {
-                _currentAgents.Logo = myOpenfileDialog.FileName;
+                _currentAgent.Logo = myOpenfileDialog.FileName;
                 LogoImage.Source = new BitmapImage(new Uri(myOpenfileDialog.FileName));
             }
         }
+
+        private void ComboType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+
     }
 }

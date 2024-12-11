@@ -30,9 +30,9 @@ namespace SafinGlazkiSave
             InitializeComponent();
 
             var currentAgents = SafinGlazkiSaveEntities.GetContext().Agent.ToList();
+            AgentListView.ItemsSource = currentAgents;
             ComboType.SelectedIndex = 0;
             ComboAgentType.SelectedIndex = 0;
-            AgentListView.ItemsSource = currentAgents;
             UpdateAgents();
         }
 
@@ -93,8 +93,6 @@ namespace SafinGlazkiSave
             }
 
             currentAgents = currentAgents.Where(p => p.Title.ToLower().Contains(TBoxSearch.Text.ToLower())|| p.Email.ToLower().Contains(TBoxSearch.Text.ToLower()) || p.Phone.Replace("+","").Replace(" ", "").Replace("(", "").Replace(")", "").Replace("-", "").Contains(TBoxSearch.Text.ToLower())).ToList();
-/*            currentAgents = currentAgents.Where(p => p.Email.ToLower().Contains(TBoxSearch.Text.ToLower())).ToList();
-            currentAgents = currentAgents.Where(p => p.Phone.ToLower().Contains(TBoxSearch.Text.ToLower())).ToList();*/
 
             AgentListView.ItemsSource=currentAgents;
             TableList = currentAgents;
@@ -219,6 +217,21 @@ namespace SafinGlazkiSave
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.Navigate(new AddEditPage(null));
+        }
+
+        private void EditBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Agent));
+        }
+
+        private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (Visibility == Visibility.Visible)
+            {
+                SafinGlazkiSaveEntities.GetContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
+                AgentListView.ItemsSource = SafinGlazkiSaveEntities.GetContext().Agent.ToList();
+            }
+            UpdateAgents();
         }
     }
 }

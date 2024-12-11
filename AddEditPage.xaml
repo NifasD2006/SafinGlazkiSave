@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SafinGlazkiSave"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="AddEditPage" FontFamily="Century Gothic" >
+      Title="AddEditPage" FontFamily="Century Gothic">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -24,29 +24,38 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
             <TextBlock Text="Название" FontSize="15" Height="20" MinWidth="120" Width="auto" Margin="5"></TextBlock>
-            <TextBox Text="{Binding Title}" FontSize="15" Height="20" Width="100" ></TextBox>
+            <TextBox Text="{Binding Title}" FontSize="15" Height="20" Width="300" ></TextBox>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
             <TextBlock Text="Адрес" FontSize="15" Height="20" MinWidth="120" Width="auto" Margin="5"></TextBlock>
-            <TextBox Text="{Binding Address}" FontSize="15" Height="20" Width="100" ></TextBox>
+            <TextBox Text="{Binding Address}" FontSize="15" Height="20" Width="300" ></TextBox>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
             <TextBlock Text="Директор" FontSize="15" Height="20" MinWidth="120" Width="auto" Margin="5"></TextBlock>
-            <TextBox Text="{Binding DirectorName}" FontSize="15" Height="20" Width="100" ></TextBox>
+            <TextBox Text="{Binding DirectorName}" FontSize="15" Height="20" Width="300" ></TextBox>
         </StackPanel>
-        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Vertical" Grid.ColumnSpan="4">
+        <StackPanel Grid.Column="0" Grid.Row="3" Orientation="Vertical" Grid.RowSpan="4">
             <TextBlock Text="Логотип" FontSize="15" Height="20" Width="auto" Margin="5"></TextBlock>
-            <Image Name="LogoImage" Stretch="UniformToFill" MinHeight="50" Height="100" Width="100" HorizontalAlignment="Center" Margin="5">
+            <Image Name="LogoImage" Stretch="UniformToFill" MinHeight="50" Height="165" Width="220" HorizontalAlignment="Stretch" Margin="5">
+
+
                 <Image.Source>
-                    <Binding Path="Logo" TargetNullValue="resources\picture.png"></Binding>
+                    <Binding Path="Logo">
+                        <Binding.TargetNullValue>
+                            <ImageSource>
+                                Resources/picture.png
+                            </ImageSource>
+                        </Binding.TargetNullValue>
+                    </Binding>
                 </Image.Source>
             </Image>
-            <Button Content="Изменить" Name="ChangePictureBtn" Click="ChangePictureBtn_Click"  ></Button>
+            
+            <Button Content="Изменить" Name="ChangePictureBtn" Click="ChangePictureBtn_Click"  />
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" >
-            <TextBlock Text="Тип агента" FontSize="15" Height="20" Width="100" Margin="5"></TextBlock>
-            <ComboBox FontSize="15" Height="25" Width="100" Name="ComboType" Text="{Binding AgentType}" >
+            <TextBlock Text="Тип агента" FontSize="15" Height="20" Width="120" Margin="5"></TextBlock>
+            <ComboBox FontSize="15" Height="25" Width="100" Name="ComboType" SelectionChanged="ComboType_SelectionChanged" >
                 <TextBlock Text="МФО"/>
                 <TextBlock Text="ООО"/>
                 <TextBlock Text="ЗАО"/>
