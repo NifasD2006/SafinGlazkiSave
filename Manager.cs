@@ -10,6 +10,7 @@ namespace SafinGlazkiSave
     internal class Manager
     {
         public static Frame MainFrame { get; set; }
+        public static Frame TradeFrame { get; set; }
 
     }
 }

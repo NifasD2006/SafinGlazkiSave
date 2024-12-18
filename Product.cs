@@ -21,7 +21,7 @@ namespace SafinGlazkiSave
             this.ProductMaterial = new HashSet<ProductMaterial>();
             this.ProductSale = new HashSet<ProductSale>();
         }
-    
+
         public int ID { get; set; }
         public string Title { get; set; }
         public Nullable<int> ProductTypeID { get; set; }
@@ -31,7 +31,8 @@ namespace SafinGlazkiSave
         public decimal MinCostForAgent { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
-    
+
+        public string TitleForBindingComboBox { get { return Title; } }
         public virtual ProductType ProductType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductCostHistory> ProductCostHistory { get; set; }

@@ -36,10 +36,10 @@
             </ComboBox>
             <Button Content="Добавить" Width="100" Margin="10" Name="AddBtn" Click="AddBtn_Click"></Button>
         </StackPanel>
-        <ListView Name="AgentListView" Grid.Row="1">
+        <ListView Name="AgentListView" Grid.Row="1" SelectionChanged="AgentListView_SelectionChanged" HorizontalContentAlignment="Center">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid Background="{Binding FonStyle }" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="170"></ColumnDefinition>
                             <ColumnDefinition Width="500" ></ColumnDefinition>
@@ -66,16 +66,22 @@
                             <TextBlock Text="{Binding AgentTypeText, StringFormat={}{0}|}" HorizontalAlignment="Left" FontSize="20" ></TextBlock>
                             <TextBlock Text="{Binding Title }" HorizontalAlignment="Right" FontSize="20" ></TextBlock>
                         </StackPanel>
-                        <TextBlock Text="{Binding Sales, StringFormat={}продаж в год {0}}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" ></TextBlock>
+                        <TextBlock Text="{Binding Prodaja, StringFormat={}продаж в год {0}}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" ></TextBlock>
                         <TextBlock Text="{Binding Phone}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" FontSize="16" ></TextBlock>
                         <TextBlock Text="{Binding Priority, StringFormat={}Приоритетность:{0}}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" FontSize="16" ></TextBlock>
                         <Button Name="EditBtn" Content="Изменить" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Click="EditBtn_Click"      ></Button>
+                        <StackPanel Grid.Row="1" Grid.Column="2">
+                            <TextBlock Text="Скидка:"  FontSize="25" HorizontalAlignment="Center"  ></TextBlock>
+                            <TextBlock Text="{Binding Discount ,StringFormat={} -{0} % }"  FontSize="25" HorizontalAlignment="Center"  ></TextBlock>
+                        </StackPanel>
+                        
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Name="ChangePriorityBtn" Content="Изменить приоритет" Width="250" Click="ChangePriorityBtn_Click" > </Button>
             <Button Name="LeftDirBtn" Content="&lt;" Width="26" Height="26" Click="LeftDirBtn_Click"></Button>
             <ListBox FontSize="20" Name="PageListBox" MouseUp="PageListBox_MouseUp">
                 <ListBox.ItemsPanel>

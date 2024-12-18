@@ -1,0 +1,19 @@
+﻿<Window x:Class="SafinGlazkiSave.ChangePriorityPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SafinGlazkiSave"
+        mc:Ignorable="d"
+        Title="Устоновить приоритет выбраных агентов" Height="125" Width="250">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Изменить приоритет" VerticalAlignment="Center" HorizontalAlignment="Center" ></TextBlock>
+        <TextBox Name="TextBoxPriority" Grid.Row="1" Height="18" Width="100" ></TextBox>
+        <Button Name="SetPriortyBtn" Content="Установить приоритет" Grid.Row="2" FontSize="15" Click="SetPriortyBtn_Click" Margin="38,0,38,10" ></Button>
+    </Grid>
+</Window>

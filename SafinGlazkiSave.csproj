@@ -65,6 +65,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddEditPageTrade.xaml.cs">
+      <DependentUpon>AddEditPageTrade.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Agent.cs">
       <DependentUpon>SafinModel.tt</DependentUpon>
     </Compile>
@@ -73,6 +76,9 @@
     </Compile>
     <Compile Include="AgentType.cs">
       <DependentUpon>SafinModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChangePriorityPage.xaml.cs">
+      <DependentUpon>ChangePriorityPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Material.cs">
       <DependentUpon>SafinModel.tt</DependentUpon>
@@ -119,11 +125,25 @@
     <Compile Include="Supplier.cs">
       <DependentUpon>SafinModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TradeHistoryPage.xaml.cs">
+      <DependentUpon>TradeHistoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TradeHistoryWindow.xaml.cs">
+      <DependentUpon>TradeHistoryWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="AddEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AddEditPageTrade.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AgentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChangePriorityPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,6 +165,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TradeHistoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TradeHistoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager.cs" />

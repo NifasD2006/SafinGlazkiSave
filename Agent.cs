@@ -11,7 +11,8 @@ namespace SafinGlazkiSave
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Windows.Media;
+
     public partial class Agent
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,7 +22,7 @@ namespace SafinGlazkiSave
             this.ProductSale = new HashSet<ProductSale>();
             this.Shop = new HashSet<Shop>();
         }
-    
+
         public int ID { get; set; }
         public int AgentTypeID { get; set; }
         public string Title { get; set; }
@@ -34,7 +35,7 @@ namespace SafinGlazkiSave
         public string INN { get; set; }
         public string KPP { get; set; }
     
-        public int Discount { get; set; }   
+
         public string AgentTypeText
         {
             get
@@ -42,7 +43,66 @@ namespace SafinGlazkiSave
                 return AgentType.Title;
             }
         }
-        public int Sales { get; set; }
+
+        public decimal Prodaja
+        {
+            get 
+            {
+                decimal p = 0;
+                foreach(ProductSale sales in ProductSale)
+                {
+                    p = p + sales.Stoimost;
+                }
+                return p;
+            }
+        }
+        public decimal Discount
+        {
+            get
+            {
+                decimal ski = 0;
+                decimal p = 0;
+                foreach (ProductSale sales in ProductSale)
+                {
+                    p = p + sales.Stoimost;
+                }
+                if(p>=0 && p <= 10000)
+                {
+                    ski = 0;
+                }
+                if (p >= 10000 && p <= 50000)
+                {
+                    ski = 5;
+                }
+                if (p >= 50000 && p <= 150000)
+                {
+                    ski = 10;
+                }
+                if (p >= 150000 && p <= 500000)
+                {
+                    ski = 20;
+                }
+                if (p>=500000)
+                {
+                    ski = 25;
+                }
+                return ski;
+            }
+        }
+        public SolidColorBrush FonStyle
+        {
+            get
+            {
+                if (Discount >= 25)
+                {
+                    return (SolidColorBrush)new BrushConverter().ConvertFromString("LightGreen");
+                }
+                else
+                {
+                    return (SolidColorBrush)new BrushConverter().ConvertFromString("White");
+                }
+            }
+        }
         public virtual AgentType AgentType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AgentPriorityHistory> AgentPriorityHistory { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,11 @@ namespace SafinGlazkiSave
     /// </summary>
     public partial class AddEditPage : Page
     {
+
+
+
         private Agent _currentAgent = new Agent();
+
         public AddEditPage(Agent SelectedService)
         {   
             InitializeComponent();
@@ -33,11 +38,14 @@ namespace SafinGlazkiSave
                 ComboType.SelectedIndex = _currentAgent.AgentTypeID-1;
             }
             DataContext = _currentAgent;
-
+            //var currentTrade = SafinGlazkiSaveEntities.GetContext().ProductSale.Where(p => p.AgentID == SelectedService.ID).ToList();
+            //TradeListView.ItemsSource = currentTrade;
+            UpdateTradeList();
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+
             StringBuilder errors = new StringBuilder();
             if (string.IsNullOrWhiteSpace(_currentAgent.Title))
                 errors.AppendLine("Укажите наименование агента");
@@ -59,9 +67,9 @@ namespace SafinGlazkiSave
                 errors.AppendLine("Укажите телефон агента");
             else
             {
-                string ph = _currentAgent.Phone.Replace("(", "").Replace("-", "").Replace("+", "").Replace(")", "").Replace(" ","");
+/*                string ph = _currentAgent.Phone.Replace("(", "").Replace("-", "").Replace("+", "").Replace(")", "").Replace(" ","");
                 if (((ph[1] == '9' || ph[1] == '4' || ph[1] == '8') && ph.Length != 11) || (ph[1] == '3' && ph.Length != 12))
-                    errors.AppendLine("Укажите правильно номер телефона");
+                    errors.AppendLine("Укажите правильно номер телефона");*/
             }
             if (string.IsNullOrWhiteSpace(_currentAgent.Email))
                 errors.AppendLine("Укажите почта агента");
@@ -149,6 +157,52 @@ namespace SafinGlazkiSave
 
         }
 
+        private void HistoryTrade_Click(object sender, RoutedEventArgs e)
+        {
 
+            TradeHistoryWindow HistoryWindow = new TradeHistoryWindow(_currentAgent);
+            HistoryWindow.ShowDialog();
+        }
+
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new AddEditPageTrade((sender as Button).DataContext as Agent));
+            UpdateTradeList();
+
+        }
+        private void UpdateTradeList()
+        {
+            
+            var currentTrade = SafinGlazkiSaveEntities.GetContext().ProductSale.Where(p => p.AgentID == _currentAgent.ID).ToList();
+            TradeListView.ItemsSource = currentTrade;
+        }
+        private void DeleteDtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            var currentService = (sender as Button).DataContext as ProductSale;
+
+            if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!",
+                                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    SafinGlazkiSaveEntities.GetContext().ProductSale.Remove(currentService);
+                    SafinGlazkiSaveEntities.GetContext().SaveChanges();
+                    MessageBox.Show("Производим удаление...");
+                    UpdateTradeList();
+                    //Manager.MainFrame.GoBack();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString());
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateTradeList();
+        }
     }
 }

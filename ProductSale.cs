@@ -15,11 +15,34 @@ namespace SafinGlazkiSave
     public partial class ProductSale
     {
         public int ID { get; set; }
+
+        public string ProductText
+        {
+            get
+            {
+                return Product.Title;
+            }
+        }
         public int AgentID { get; set; }
         public int ProductID { get; set; }
         public System.DateTime SaleDate { get; set; }
         public int ProductCount { get; set; }
-    
+
+        public decimal Stoimost
+        {
+            get
+            {
+                return ProductCount * Product.MinCostForAgent;
+            }
+        }
+
+        public string TitleForBindingComboBox
+        {
+            get
+            {
+                return Product.Title;
+            }
+        }
         public virtual Agent Agent { get; set; }
         public virtual Product Product { get; set; }
     }

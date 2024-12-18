@@ -33,6 +33,7 @@ namespace SafinGlazkiSave
             AgentListView.ItemsSource = currentAgents;
             ComboType.SelectedIndex = 0;
             ComboAgentType.SelectedIndex = 0;
+            ChangePriorityBtn.Visibility = Visibility.Hidden;
             UpdateAgents();
         }
 
@@ -233,5 +234,63 @@ namespace SafinGlazkiSave
             }
             UpdateAgents();
         }
+
+        private void AgentListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (AgentListView.SelectedItems.Count > 1)
+                ChangePriorityBtn.Visibility = Visibility.Visible;
+            else
+                ChangePriorityBtn.Visibility = Visibility.Hidden;
+        }
+
+        private void ChangePriorityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            int maxPriorty = 0;
+            foreach (Agent agent in AgentListView.SelectedItems) 
+            {
+                if(agent.Priority > maxPriorty)
+                    maxPriorty = agent.Priority;
+            }
+
+            ChangePriorityPage SetWindow=new ChangePriorityPage(maxPriorty);
+            SetWindow.ShowDialog();
+            string str = SetWindow.TextBoxPriority.Text;
+            int digit = 0;
+            if (string.IsNullOrEmpty(SetWindow.TextBoxPriority.Text) || !int.TryParse(str, out digit) )
+            {
+                MessageBox.Show("Необходимо ввести число для приоритета");
+            }
+            else
+            {
+                int NewP = Convert.ToInt32(SetWindow.TextBoxPriority.Text);
+                if (NewP < 0)
+                {
+                    MessageBox.Show("Приоритет должен быть больше нуля");
+                }
+                else
+                {
+                    foreach (Agent agent in AgentListView.SelectedItems)
+                    {
+                        agent.Priority = NewP;
+                    }
+                    try
+                    {
+                        SafinGlazkiSaveEntities.GetContext().SaveChanges();
+                        MessageBox.Show("Сохранено");
+                        UpdateAgents();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString());
+                    }
+
+                }
+
+
+
+            }
+        }
+
+        
     }
 }
